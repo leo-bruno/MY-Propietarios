@@ -1,11 +1,16 @@
 package com;
 
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import org.primefaces.event.FlowEvent;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -25,21 +30,62 @@ public class UsuarioBean implements Serializable{
 	DatastoreService ds;
 	Usuario usuarioSeleccionado;
 	List<Usuario> listaUsuario;
-	List<String> listaApart;
+	
+	ObjetoBean objeto;
+	
+	private boolean skip;
 	
 	public UsuarioBean() {
+		skip=false;
+	}
+	
+	public String irIndexUsuario() {
+		return "paginaAdmin";
+	}
+	public void imprimir(String msg) {
+		System.out.println("Mensaje: "+msg);
+	}
+	public List<Usuario> getLista(){
+		imprimir("entra getLista");
+		listaUsuario=new ArrayList<Usuario>();
+		ds=DatastoreServiceFactory.getDatastoreService();
+		Query query=new Query("Usuario").addSort("correo", Query.SortDirection.ASCENDING);
+		List<Entity>entities=new ArrayList<Entity>();
+		imprimir("hace query");
+		entities=ds.prepare(query).asList(FetchOptions.Builder.withLimit(20));
 		
+		for(Entity e : entities) {
+			
+			String vCorreo=(String)e.getProperty("correo");
+			String vPassword=(String)e.getProperty("password");
+			String vCliente=(String)e.getProperty("cliente");
+			usuario=new Usuario(vCorreo,vPassword,vCliente);
+			listaUsuario.add(usuario);
+		}
+		
+		return listaUsuario;
+	}
+	public String irModificarUsuario() {
+		
+		return "";
+	}
+	
+	public String borrarUsuario() {
+		return "";
+	}
+	
+	public String irCrearUsuario() {
+		return "crearPropietario";
 	}
 	
 	public String Acceder() {
 		ds=DatastoreServiceFactory.getDatastoreService();
 		listaUsuario=new ArrayList<Usuario>();
 		Query q=new Query("Usuario");
-		listaApart=new ArrayList<String>();
 		
 		List<Entity> ent=ds.prepare(q).asList(FetchOptions.Builder.withDefaults());
 		if(ent.isEmpty()) {
-			usuarioSeleccionado=new Usuario("support@masteryield.com","Nadia123","todo",listaApart);
+			usuarioSeleccionado=new Usuario("support@masteryield.com","Nadia123","todo");
 			ds.put(usuarioSeleccionado.getEnt());
 		}
 		if(correo.equals("support@masteryield.com") && password.equals("Nadia123")) return "paginaAdmin";
@@ -49,8 +95,7 @@ public class UsuarioBean implements Serializable{
 					String vC=(String)e.getProperty("correo");
 					String vP=(String)e.getProperty("password");
 					String vCl=(String)e.getProperty("cliente");
-					List<String> vLista=(List<String>)e.getProperty("apartamentos");
-					usuarioSeleccionado=new Usuario(vC,vP,vCl,vLista);
+					usuarioSeleccionado=new Usuario(vC,vP,vCl);
 					listaUsuario.add(usuarioSeleccionado);
 				}
 			}
@@ -60,15 +105,29 @@ public class UsuarioBean implements Serializable{
 		
 		return "paginaPrincipal";
 	}
-
-	public List<String> getListaApart() {
-		return listaApart;
+	
+	public String doRegistro() throws Exception{
+		String[] objetos;
+		ds=DatastoreServiceFactory.getDatastoreService();
+		int i=0;
+	
+		
+		objetos=objeto.getObjetosSeleccionados();
+		usuarioSeleccionado=new Usuario(correo,password,cliente);
+		ds.put(usuarioSeleccionado.getEnt());
+		/* MOTO PARA AGREGAR EN LA BASE DE DATOS, PERO HASTA QUE LA TABLA NO SE CREE NO SE PUEDE PROBAR
+		while(!objetos[i].isEmpty()) {
+			String query="insert into owner_properties (email,password,objectno) values ('"+correo+"', '"+password+"', '"+objetos[i]+"');";
+			String url = "http://130.193.15.22:8080/Propietarios_MY/webresources/com.Operaciones/metodo4/"+query;
+	        URLConnection connection = new URL( url).openConnection();
+	        InputStream stream=connection.getInputStream();
+			i++;
+		}
+		*/
+		return "paginaAdmin";
 	}
 
-	public void setListaApart(List<String> listaApart) {
-		this.listaApart = listaApart;
-	}
-
+	
 	public String getCorreo() {
 		return correo;
 	}
@@ -124,5 +183,22 @@ public class UsuarioBean implements Serializable{
 	public void setListaUsuario(List<Usuario> listaUsuario) {
 		this.listaUsuario = listaUsuario;
 	}
+	
+	public String onFlowProcess(FlowEvent event) {
+        if(skip) {
+            skip = false;   //reset in case user goes back
+            return "confirmar";
+        }
+        else {
+            return event.getNewStep();
+        }
+    }
+	public boolean isSkip() {
+        return skip;
+    }
+ 
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
 	
 }

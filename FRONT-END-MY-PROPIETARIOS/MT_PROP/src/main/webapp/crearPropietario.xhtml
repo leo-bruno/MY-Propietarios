@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+  <link rel="stylesheet" href="css/estilos.css" type="text/css" />
+  
+</h:head>
+<body>
+<ui:include src="/templates/base.xhtml"/>  
+<h:form>													<!--  Panel-> Wizard en Primeface -->
+                 
+    <p:growl id="growl" sticky="true" showDetail="true"/>
+ 
+    <p:wizard flowListener="#{UsuarioBean.onFlowProcess}">
+        <p:tab id="cliente" title="Cliente">
+            <p:panel header="Seleccionar un cliente">
+                <p:messages />
+                <h:panelGrid columns="2" columnClasses="label, value">
+                    <h:outputText value="Cliente: *" />
+                    <p:inputText value="#{UsuarioBean.usuarioSeleccionado.cliente}" required="true" label="cliente"/>
+ 
+                    
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+        <p:tab id="datos" title="Propietario">
+            <p:panel header="Datos del propietario">
+                <p:messages />
+                <h:panelGrid columns="2" columnClasses="label, value">
+                    <h:outputText value="Correo: " />
+                    <p:inputText value="#{UsuarioBean.usuarioSeleccionado.correo}" />
+                    <h:outputText value="Contraseña: " />
+                    <p:inputText value="#{UsuarioBean.usuarioSeleccionado.password}" />
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+ 
+        <p:tab id="propiedades" title="Propiedades">   <!--  selectManyCheckbox en Primeface -->
+            <p:panel header="Identificar Propiedades">
+                <p:messages />
+                <h:panelGrid columns="1" columnClasses="value">
+                    <p:selectManyCheckbox id="grid" value="#{ObjetoBean.objetosSeleccionados}" layout="grid" columns="3">
+        				<f:selectItems value="#{ObjetoBean.objetos}" var="objeto" itemLabel="#{objeto}" itemValue="#{objeto}" />
+    				</p:selectManyCheckbox>
+                </h:panelGrid>
+            </p:panel>
+        </p:tab>
+ 
+        <p:tab id="confirmar" title="Confirmacion">
+            <p:panel header="Guardar Confirmacion">
+                <h:panelGrid id="confirmacion" columns="3" columnClasses="grid,grid,grid">
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Correo: " />
+                        <h:outputText value="#{UsuarioBean.usuarioSeleccionado.correo}" styleClass="outputLabel"/>
+ 
+                        <h:outputText value="Lastname: " />
+                        <h:outputText value="#{UsuarioBean.usuarioSeleccionado.password}" styleClass="outputLabel"/>
+ 
+                        <h:outputText value="Propiedades: " />
+                        <p:dataList value="#{ObjetoBean.objetosSeleccionados}" var="objeto" type="ordered">
+                        	#{objeto.name}
+                        </p:dataList>
+                    </h:panelGrid>
+                </h:panelGrid>
+ 
+                <p:commandButton value="Submit" actionListener="#{userWizard.save}" update="growl" process="@this"/>
+            </p:panel>
+        </p:tab>
+    </p:wizard>
+ 
+</h:form> 
+
+</body>
+</html>

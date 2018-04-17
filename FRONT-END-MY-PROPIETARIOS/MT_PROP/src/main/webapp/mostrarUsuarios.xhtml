@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+ 
+<h:head>
+  <link rel="stylesheet" href="css/estilos.css" type="text/css" />
+  
+</h:head>
+<body>
+<ui:include src="/templates/base.xhtml"/>  
+	<h:form>
+                	<b:dataTable value="#{UsuarioBean.getLista()}" var="usuario" id="usuario">
+				   		<b:dataTableColumn value="#{usuario.correo}" />
+				   		<b:dataTableColumn  value="#{usuario.password}" />
+				   		<b:dataTableColumn  value="#{usuario.cliente}" />
+						
+						<b:dataTableColumn>
+							<b:commandButton value="MODIFICAR" icon="edit" action="#{UsuarioBean.irModificarUsuario(usuario)}"></b:commandButton>
+						</b:dataTableColumn>
+						<b:dataTableColumn>
+							<b:commandButton value="BORRAR" icon="warning" action="#{UsuarioBean.borrarUsuario(usuario)}"></b:commandButton>
+						</b:dataTableColumn>
+					</b:dataTable>   
+                <b:commandButton value="Crear Propietario" look="info" action="#{UsuarioBean.irCrearUsuario()}"></b:commandButton>
+
+                
+     </h:form>
+</body>
+</html>

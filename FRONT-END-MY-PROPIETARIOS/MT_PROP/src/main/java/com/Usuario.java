@@ -11,25 +11,16 @@ public class Usuario implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	String correo, password, cliente;
-	List<String> apartamentos;
 	
 	Entity ent=new Entity("Usuario");
 	DatastoreService ds;
 	
-	public Usuario(String vcorreo, String vpassword, String vcliente, List<String> vAp) {
+	public Usuario(String vcorreo, String vpassword, String vcliente) {
 		ent.setProperty("correo", vcorreo);
 		ent.setProperty("password", vpassword);
 		ent.setProperty("cliente", vcliente);
-		ent.setProperty("apartamentos", vAp);
 	}
 
-	public List<String> getApartamentos() {
-		return (List<String>)ent.getProperty("apartamentos");
-	}
-
-	public void setApartamentos(List<String> apartamentos) {
-		ent.setProperty("apartamentos", apartamentos);
-	}
 
 	public String getCorreo() {
 		return (String)ent.getProperty("correo");
