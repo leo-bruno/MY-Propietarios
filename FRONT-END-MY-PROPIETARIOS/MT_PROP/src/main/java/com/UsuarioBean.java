@@ -35,9 +35,18 @@ public class UsuarioBean implements Serializable{
 	
 	private boolean skip;
 	
+	
 	public UsuarioBean() {
 		skip=false;
 	}
+	
+	/*public void crearUsuarioBasico() {
+		ds=DatastoreServiceFactory.getDatastoreService();
+		usuarioSeleccionado=new Usuario(correo,password,cliente);
+		ds.put(usuarioSeleccionado.getEnt());
+		
+		
+	}*/
 	
 	public String irIndexUsuario() {
 		return "paginaAdmin";

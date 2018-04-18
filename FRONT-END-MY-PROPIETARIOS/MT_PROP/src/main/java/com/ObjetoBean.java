@@ -30,10 +30,30 @@ public class ObjetoBean implements Serializable{
 	public String infoEntrante;
 	
 	List<Objeto> objetos;
+	List<String> objetosLista;
 	String[] objetosSeleccionados;
 	Objeto objeto, objetosSeleccionado;
 	
 	public ObjetoBean() {
+		
+	}
+	public void listaObjetos()throws Exception{
+		URL url = new URL("http://130.193.15.22:8080/Propietarios_MY/webresources/com.Operaciones/metodo3/"+infoEntrante);
+        URLConnection connection = url.openConnection();
+        Document doc = parseXML(connection.getInputStream());
+        
+        doc.getDocumentElement().normalize();
+        NodeList nList = doc.getElementsByTagName("objects");
+        for(int i=0; i<nList.getLength();i++)
+        {
+        	Node nNode=nList.item(i);
+        	if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+        		Element eElement = (Element) nNode;
+        		objectno=eElement.getElementsByTagName("objecto").item(0).getTextContent();
+        		objetosLista.add(objectno);
+        	}
+        	
+	    }
 		
 	}
 	

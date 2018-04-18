@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+<h:head>
+	<title>Lista Reservas</title>
+	<script type='text/javascript' src="js/oauth.js"></script>
+</h:head>
+<body>
+<ui:include src="/templates/basePropietario.xhtml"/> 
+<h:form>
+                	<b:dataTable value="#{ReservaBean.getReservasPorFecha()}" var="reserva" id="reserva">
+                		<b:dataTableColumn  value="#{reserva.bookingno}" />
+				   		<b:dataTableColumn value="#{reserva.datearrival}" />
+				   		<b:dataTableColumn  value="#{reserva.datedepartura}" />
+						<b:dataTableColumn  value="#{reserva.clientname}" />
+						<b:dataTableColumn  value="#{reserva.status}" />
+					</b:dataTable>   
+
+                
+     </h:form>
+
+</body>
+</html>

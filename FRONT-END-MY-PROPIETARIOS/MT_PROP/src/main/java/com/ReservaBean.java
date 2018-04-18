@@ -28,12 +28,47 @@ public class ReservaBean implements Serializable{
 	public String datearrival;
 	public String datedeparture;
 	public String status, vS;
+	public String fechaInicio, fechaFin;
 	
 	List<Reserva1> reservas;
 	Reserva1 res;
+	Objeto objetoSeleccionado;
 	
 	public ReservaBean() {
 
+	}
+	
+	public String irListaReservasPorObjeto() {
+		
+		return"reservasPorObjeto";
+	}
+	
+	public List<Reserva1> getReservasPorFecha()throws Exception{
+		URL url = new URL("http://130.193.15.22:8080/Propietarios_MY/webresources/com.Operaciones/metodo5/"+fechaInicio+"/"+fechaFin+"/"+objetoSeleccionado.objectno);
+        URLConnection connection = url.openConnection();
+        reservas=new ArrayList<Reserva1>();
+        Document doc = parseXML(connection.getInputStream());
+        
+        doc.getDocumentElement().normalize();
+        NodeList nList = doc.getElementsByTagName("bookings");
+        for(int i=0; i<nList.getLength();i++)
+        {
+        	Node nNode=nList.item(i);
+        	if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+        		Element eElement = (Element) nNode;
+        		bookingno=eElement.getElementsByTagName("bookingno").item(0).getTextContent();
+        		if(eElement.getElementsByTagName("clientname").getLength()==0) {clientname="";}
+        		else clientname=eElement.getElementsByTagName("clientname").item(0).getTextContent();
+        		datearrival=eElement.getElementsByTagName("datearrival").item(0).getTextContent();
+        		datedeparture=eElement.getElementsByTagName("datedeparture").item(0).getTextContent();
+        		status=eElement.getElementsByTagName("status").item(0).getTextContent();
+        		res=new Reserva1(bookingno,clientname,datearrival,datedeparture,status);
+      	        reservas.add(res);
+        	}
+        	
+	    }
+		
+		return reservas;
 	}
 
 	public List<Reserva1> getLista() throws Exception{
@@ -145,6 +180,22 @@ public class ReservaBean implements Serializable{
 
 	public void setRes(Reserva1 res) {
 		this.res = res;
+	}
+
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public String getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 	
 

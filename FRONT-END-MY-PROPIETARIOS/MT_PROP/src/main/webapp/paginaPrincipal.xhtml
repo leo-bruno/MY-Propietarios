@@ -4,13 +4,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:b="http://bootsfaces.net/ui">
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
  
 <h:head>
-	<title>Inicio</title>
+	<title>Principal Propietario</title>
 	<script type='text/javascript' src="js/oauth.js"></script>
 </h:head>
 <body>
+<ui:include src="/templates/basePropietario.xhtml"/> 
+<h:form>
+                	<b:dataTable value="#{ObjetoBean.getLista()}" var="objeto" id="objeto">
+				   		<b:dataTableColumn value="#{objeto.objectno}" />
+				   		<b:dataTableColumn  value="#{objeto.name}" />
+						
+						<b:dataTableColumn>
+							<b:dateTimePicker value="#{ReservaBean.fechaInicio}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn>
+							<b:dateTimePicker value="#{ReservaBean.fechaFin}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn>
+							<b:commandButton value="Buscar" iconAwesome="fa-leanpub" action="#{ReservaBean.irListaReservasPorFecha()}" update="@none" look="info" style="width:80px"/>
+						</b:dataTableColumn>
+					</b:dataTable>   
+
+                
+     </h:form>
 
 </body>
 </html>

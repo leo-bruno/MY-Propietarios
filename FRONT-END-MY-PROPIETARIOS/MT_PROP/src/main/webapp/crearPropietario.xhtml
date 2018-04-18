@@ -5,8 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:b="http://bootsfaces.net/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets">
  
 <h:head>
   <link rel="stylesheet" href="css/estilos.css" type="text/css" />
@@ -15,25 +14,29 @@
 <body>
 <ui:include src="/templates/base.xhtml"/>  
 <h:form>		
-<b:carousel id="wizard" styleClass="wizardPseudoClass"
+<!-- <b:carousel id="wizard" styleClass="wizardPseudoClass" /> CARROUSEL BOOTFACES 
               style="width:400px; padding-top:20px"
               startAnimation="false"
               showIndicators="false"
               wrap="false">
     <b:carouselItem style="width:400px; height:230px">
       <b:panel title="Seleccionar Cliente" look="primary">
-		<p:inputText value="#{UsuarioBean.usuarioSeleccionado.cliente}" required="true" title="cliente"/>
+		<b:inputText value="#{UsuarioBean.usuarioSeleccionado.cliente}" required="true" title="cliente"/>
       </b:panel>
     </b:carouselItem>
     <b:carouselItem style="width:400px;height:230px">
-      <b:panel title="Step 2" look="danger  ">
-        <b:inputText label="Street"  />
+      <b:panel title="Datos Cliente" look="danger  ">
+        <b:inputText label="Correo"  value="#{UsuarioBean.usuarioSeleccionado.correo}"/>
+        <b:inputText label="password" value="#{UsuarioBean.usuarioSeleccionado.password}" />
       </b:panel>
     </b:carouselItem>
     <b:carouselItem style="width:400px;height:230px">
-      <b:panel title="Step 3" look="success">
-        <b:inputText label="Zip code"  />
-        <b:inputText label="City"  />
+      <b:panel title="Apartamentos" look="success"> SELECT MULTI MENU  MULTIPLE CHOISE COMBOX BOOTFACES 
+        <b:panelGrid colSpans="2,2,2">
+			<b:selectMultiMenu value="#{UsuarioBean.listaObjetos}"  >
+    			<f:selectItems value="#{UsuarioBean.objetosLista}" var="c" itemValue="#{c}" itemLabel="#{c}"/>
+			</b:selectMultiMenu>
+		</b:panelGrid>
       </b:panel>
     </b:carouselItem>
     <b:carouselControl direction="right" >
@@ -46,7 +49,7 @@
                 onclick="$('.wizardPseudoClass').carousel('next');$('.wizardPseudoClass').carousel('pause');"
                 look="success" />
     </b:carouselControl>
-  </b:carousel>
+  </b:carousel> -->
 
 
 
