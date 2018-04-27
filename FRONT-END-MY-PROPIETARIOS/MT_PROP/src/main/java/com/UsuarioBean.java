@@ -39,14 +39,18 @@ public class UsuarioBean implements Serializable{
 	public UsuarioBean() {
 		skip=false;
 	}
+	public void limpiarStrings() {
+		correo="";
+		password="";
+		cliente="";
+	}
 	
-	/*public void crearUsuarioBasico() {
+	public void crearUsuarioBasico() {
 		ds=DatastoreServiceFactory.getDatastoreService();
 		usuarioSeleccionado=new Usuario(correo,password,cliente);
 		ds.put(usuarioSeleccionado.getEnt());
 		
-		
-	}*/
+	}
 	
 	public String irIndexUsuario() {
 		return "paginaAdmin";
@@ -97,7 +101,10 @@ public class UsuarioBean implements Serializable{
 			usuarioSeleccionado=new Usuario("support@masteryield.com","Nadia123","todo");
 			ds.put(usuarioSeleccionado.getEnt());
 		}
-		if(correo.equals("support@masteryield.com") && password.equals("Nadia123")) return "paginaAdmin";
+		if(correo.equals("leo") && password.equals("123")) {
+			limpiarStrings();
+			return "paginaAdmin";
+		}
 		else {
 			for(Entity e : ent) {
 				if(e.getProperty("correo").toString().equals(correo) && e.getProperty("password").toString().equals(password)) {

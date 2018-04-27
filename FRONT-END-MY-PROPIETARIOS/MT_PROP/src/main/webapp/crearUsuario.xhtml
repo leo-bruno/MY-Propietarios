@@ -5,17 +5,39 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
  
 <h:head>
     
 </h:head>
-<body>
+<h:body>
 <ui:include src="/templates/base.xhtml"/> 
-<b:inputText value="#{UsuarioBean.usuarioSeleccionado.correo}" title="Correo"></b:inputText> 
-<b:inputText value="#{UsuarioBean.usuarioSeleccionado.password}" title="Password"></b:inputText> 
-<b:inputText value="#{UsuarioBean.usuarioSeleccionado.cliente}" title="Cliente"></b:inputText> 
-<b:commandButton action="#{UsuarioBean.crearUsuarioBasico()}" value="Crear"></b:commandButton>
 
-</body>
+
+
+	
+    
+	    <b:container>
+			<h:form>
+				<b:inputText value="#{UsuarioBean.correo}" label="Usuario-Correo"></b:inputText> 
+				<b:inputText value="#{UsuarioBean.password}" label="Contraseña"></b:inputText> 
+				<b:inputText value="#{UsuarioBean.cliente}" label="IP"></b:inputText> 
+				<c:choose>
+				<c:when test="#{empty UsuarioBean.correo}">
+						<b:container fluid="true">
+			                        <b:alert style="width: 25%" severity="info" title="Aviso"></b:alert>    
+			            </b:container>
+			    </c:when>
+			    <c:otherwise>
+			    				 <b:commandButton action="#{UsuarioBean.crearUsuarioBasico()}" value="Crear"/>
+			    </c:otherwise>
+				</c:choose> 
+
+			</h:form>
+		
+		</b:container>
+	
+
+</h:body> 
 </html>
